@@ -1,0 +1,40 @@
+# 🔧 Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# 💾 Logs & debug
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# 🧪 Test coverage & reports
+coverage/
+cypress/screenshots/
+cypress/videos/
+test-results/
+
+# 📦 Environment variables
+.env
+.env.*    # For variants like .env.test
+
+# 🔍 IDE and editor junk
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# 🚀 Build output
+client/build/
+client/dist/
+server/dist/
+
+# 📂 OS cache files
+Thumbs.db
+ehthumbs.db
+
+#  Misc
+*.tgz
+*.cache
+.cache/

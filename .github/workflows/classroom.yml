@@ -1,0 +1,67 @@
+name: Classroom Autograding
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  autograding:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🧪 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install server dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: 📦 Install client dependencies
+        working-directory: ./client
+        run: npm install
+
+      # 🔍 Server and Backend Checks
+      - name: ✅ Check if server.js exists
+        run: test -f server/server.js
+
+      - name: ✅ Check if MongoDB connection is configured
+        run: grep -q "mongoose.connect" server/server.js || grep -r "mongoose.connect" server/
+
+      - name: ✅ Check if Post model exists
+        run: test -f server/src/models/Post.js
+
+      - name: ✅ Check if User model exists
+        run: test -f server/src/models/User.js
+
+      - name: ✅ Check if API routes are defined
+        run: grep -r "app.use.*\\/api\\/" server/
+
+      # 🔍 Client and Frontend Checks
+      - name: ✅ Check if client App.jsx exists
+        run: test -f client/src/App.jsx
+
+      - name: ✅ Check for API service in client
+        run: test -f client/src/services/api.js || test -f client/src/api.js
+
+      - name: ✅ Check for React Router usage
+        run: grep -q "react-router-dom" client/package.json
+
+      - name: ✅ Check for React hooks usage
+        run: grep -r -E "use(State|Effect|Context)" client/src/
+
+      # 🔍 Validation and Auth
+      - name: ✅ Check for form validation usage
+        run: grep -r -i -E "validation|validate|Joi|yup|validator" server/
+
+      - name: ✅ Check for authentication implementation
+        run: grep -r -i -E "auth|login|register|jwt|token|password" server/
+
+      - name: ✅ Check for error handling in server
+        run: grep -r -i -E "try.*catch|error.*handling|catch.*error" server/
